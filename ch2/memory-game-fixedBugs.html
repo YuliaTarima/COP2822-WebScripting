@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Hunt - Memory Game</title>
+    <style>
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        .card.flipped {
+            background-color: #fff;
+        }
+        #score {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .matched {
+            background-color: #90EE90;
+        }
+    </style>
+</head>
+<body>
+<div id="score">Score: <span id="scoreValue">0</span></div>
+<div class="game-container" id="gameContainer">
+    <!-- Cards will be added here -->
+</div>
+
+<script>
+    // BUG 1: Event handler overwriting
+    window.onload = function() {
+        console.log("First load handler");
+        initializeGame();
+    }
+
+    window.onload = function() {
+        console.log("Second load handler - overwrites first");
+        setupEventListeners();
+    }
+
+    let score = 0;
+    let flippedCards = [];
+
+    // Change these emojis. Remember that you need two of each emoji
+    const cardSymbols = ['🌟', '🌟', '🎈', '🎈', '🎸', '🎸', '🎨', '🎨',
+        '🚗', '🚗', '🌺', '🌺', '🎮', '🎮', '⚡', '⚡'];
+
+    function initializeGame() {
+        const gameContainer = document.getElementById('gameContainer');
+        const shuffledSymbols = cardSymbols.sort(() => Math.random() - 0.5);
+
+        shuffledSymbols.forEach((symbol, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.symbol = symbol;
+            card.dataset.index = index;
+            gameContainer.appendChild(card);
+        });
+    }
+
+    // BUG 2: Incorrect event listener removal
+    function setupEventListeners() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            // This creates multiple listeners on the same card
+            card.addEventListener('click', handleCardClick);
+            card.addEventListener('click', handleCardClick);
+            card.addEventListener('click', handleCardClick);
+        });
+    }
+
+    // BUG 3: Event propagation issues
+    document.getElementById('gameContainer').onclick = function(event) {
+        if (event.target.classList.contains('card')) {
+            // This will trigger along with individual card clicks
+            console.log("Container clicked!");
+        }
+    }
+
+    // BUG 4: Incorrect event handling logic
+    function handleCardClick(event) {
+        const card = event.target;
+
+        // Missing check if card is already flipped or matched
+        card.textContent = card.dataset.symbol;
+        card.classList.add('flipped');
+
+        flippedCards.push(card);
+
+        // BUG 5: Incorrect matching logic
+        if (flippedCards.length === 2) {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.symbol === card2.dataset.symbol) {
+                // Cards match
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                score += 1;
+                document.getElementById('scoreValue').textContent = score;
+            }
+            // still part of Bug 5 - Missing else clause to handle non-matching cards
+            flippedCards = [];
+        }
+    }
+
+    // BUG 6: Missing win condition check
+    function checkWin() {
+        const matchedCards = document.querySelectorAll('.matched');
+        if (matchedCards.length === cardSymbols.length) {
+            // Should announce win and prevent further clicks
+            console.log("Game Won!");
+        }
+    }
+</script>
+</body>
+</html>
