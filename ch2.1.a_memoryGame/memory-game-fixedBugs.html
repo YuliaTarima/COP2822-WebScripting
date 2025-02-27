@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Bug Hunt - Memory Game</title>
+    <style>
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+            margin: 20px auto;
+            width: fit-content;
+            background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(223, 241, 239, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 70px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Add shadow */
+            box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+            border-radius: 10px;
+
+        }
+
+        .card.flipped {
+            background-color: #02ccba;
+            border: 1px solid #fff;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8); /* Change shadow when flipped */
+        }
+
+        #score {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        .matched {
+            background-color: #90EE90;
+        }
+    </style>
+</head>
+<body>
+<div id="score">Score: <span id="scoreValue">0</span></div>
+<div class="game-container" id="gameContainer">
+    <!-- Cards will be added here -->
+</div>
+
+<script>
+    // BUG 1: Event handler overwriting
+    // BUG 1 FIX 1
+    // window.addEventListener('load', function () {
+    //     console.log("First load handler");
+    //     initializeGame();
+    // });
+    //
+    // window.addEventListener('load', function () {
+    //     console.log("Second load handler");
+    //     setupEventListeners();
+    // });
+
+    // BUG 1 FIX 2.1 - Anonymous function with event handler
+    window.onload = function () {
+        console.log("Page loaded");
+        initializeGame(); // Ensure cards are initialized
+        console.log("First load handler");
+        setupEventListeners(); // Set up the event listeners
+        console.log("Second load handler");
+    };
+
+    // // BUG 1 FIX 2.2 - Anonymous function with event listener
+    // window.addEventListener("load", function(){
+    //     console.log("Page loaded");
+    //     initializeGame(); // Ensure cards are initialized
+    //     console.log("First load handler");
+    //     setupEventListeners(); // Set up the event listeners
+    //     console.log("Second load handler");
+    // })
+
+    let score = 0;
+    let flippedCards = [];
+
+    const cardSymbols = ['🦩', '🦩', '🦄', '🦄', '🧁', '🧁', '👅', '👅',
+        '🍉', '🍉', '🎅', '🎅', '🪆', '🪆', '🪅', '🪅'];
+
+    function initializeGame() {
+        const gameContainer = document.getElementById('gameContainer');
+        const shuffledSymbols = cardSymbols.sort(() => Math.random() - 0.5);
+
+        shuffledSymbols.forEach((symbol, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.symbol = symbol;
+            card.dataset.index = index;
+            gameContainer.appendChild(card);
+        });
+    }
+
+    // BUG 2: Incorrect event listener removal
+    function setupEventListeners() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            // attach a single event listener for the same card
+            card.addEventListener('click', handleCardClick);
+        });
+    }
+
+    document.getElementById('gameContainer').onclick = function (event) {
+        if (event.target.classList.contains('card')) {
+            console.log("Container clicked!");
+        }
+    }
+
+    // BUG 4: Incorrect event handling logic
+    // Missing check if card is already flipped or matched
+    function handleCardClick(event) {
+        // Stop propagation to prevent the container's event
+        // from being triggered
+        event.stopPropagation();
+
+        const card = event.target;
+        // Check if card is already flipped or matched
+        if (card.classList.contains('flipped') || card.classList.contains('matched')) {
+            return;
+        }
+
+        // Flip the card by revealing its symbol
+        card.textContent = card.dataset.symbol;
+        card.classList.add('flipped');
+        console.log('card flipped');
+
+        // Add the card to the flipped cards array
+        flippedCards.push(card);
+
+        // If two cards are flipped, check if they match
+        if (flippedCards.length === 2) {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.symbol === card2.dataset.symbol) {
+                // Cards match
+                console.log('Cards match')
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                score += 1;
+                document.getElementById('scoreValue').textContent = score;
+            } else {
+                // Cards don't match, flip them back after a delay
+                console.log("Cards don't match");
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card1.textContent = '';
+                    card2.classList.remove('flipped');
+                    card2.textContent = '';
+                }, 1000); // Delay of 1 second before flipping back
+            }
+
+            // Reset flipped cards array after comparing
+            flippedCards = [];
+
+            // Check for win condition after each match
+            checkWin();
+        }
+    }
+
+    function checkWin() {
+        const matchedCards = document.querySelectorAll('.matched');
+
+        // Check if the number of matched cards equals the total number of cards
+        if (matchedCards.length === cardSymbols.length) {
+            alert("Congratulations! You won the game!");
+            resetGame();
+        }
+    }
+
+    // Function to reset the game
+    function resetGame() {
+        score = 0;
+        document.getElementById('scoreValue').textContent = score;
+
+        const gameContainer = document.getElementById('gameContainer');
+        gameContainer.innerHTML = ""; // Clear existing cards
+
+        flippedCards = []; // Reset flipped cards array
+
+        initializeGame(); // Reinitialize game with shuffled cards
+        setupEventListeners(); // Reattach event listeners
+    }
+
+</script>
+</body>
+</html>
