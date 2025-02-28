@@ -6,6 +6,5 @@
       Author: 
       Date:   
 
-      Filename: project02-01.js
+      Filename: index.js
  */
-

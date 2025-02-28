@@ -1,0 +1,158 @@
+/*  JavaScript 7th Edition
+    Chapter 2
+    Hands-on Project 2-1
+
+    Filename: styles.css
+*/
+
+/* apply a natural box layout model to all elements */
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* reset rules */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+:root {
+    --pink-calm-color: #ff409991;
+    --pink-bright-color: #ff4099;
+    --teal-color: #02ccba;
+}
+
+html {
+    background-image: url('bg.webp');
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the image */
+}
+
+body {
+    line-height: 1;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 40px auto;
+    color: #7e644cc9;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 2px solid var(--pink-bright-color);
+    border-radius: 15px;
+    /*layering shadows*/
+    box-shadow: 4px 4px 5px rgba(255, 64, 153, 0.5), 8px 8px 13px rgba(57, 224, 241, 0.5);
+}
+
+ol, ul {
+    list-style: none;
+}
+
+/* page header */
+header {
+    background: var(--pink-calm-color);
+    width: 100%;
+    color: black;
+    font-size: 48px;
+    text-align: center;
+    line-height: 1.5em;
+    border-bottom: 4px solid #fff;
+    border-radius: inherit;
+}
+
+/* main content */
+article {
+    text-align: center;
+
+}
+
+form {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+input {
+    display: block;
+    margin: 10px auto;
+    width: 100px;
+    text-align: right;
+    font-size: 1.2em;
+    padding: 4px;
+    color: var(--pink-bright-color);
+    border-radius: 4px; /* Rounded corners */
+    border: 1px solid var(--teal-color);
+    pointer-events: auto;
+}
+
+input[type="number"]:focus {
+    outline: none; /* Remove default outline */
+    border-color: var(--pink-bright-color); /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(255, 64, 153, 0.5); /* Add a shadow effect */
+}
+
+
+/* Style labels */
+label {
+    font-weight: bold; /* Make labels bold */
+    display: block; /* Block display for spacing */
+    margin-bottom: 5px; /* Space below the label */
+}
+
+h1 {
+    color: #fff;
+}
+
+h2 {
+    margin: 20px 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    color: var(--pink-bright-color);
+
+}
+
+h3 {
+    font-size: 1em;
+    font-weight: normal;
+    font-family: sans-serif;
+}
+
+
+div {
+    display: block;
+    flex: 1 1 100px;
+}
+
+div#arrow {
+    line-height: 70px;
+    font-size: 70px;
+}
+
+footer {
+    margin: 20px 0 15px;
+    text-align: center;
+    font-size: 1.1em;
+    line-height: 1.2;
+    padding: 0 20px;
+}
