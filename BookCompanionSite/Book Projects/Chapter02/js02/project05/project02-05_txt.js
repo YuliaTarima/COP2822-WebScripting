@@ -6,7 +6,7 @@
       Author: 
       Date:   
 
-      Filename: project02-05.js
+      Filename: index.js
  */
  
 // Add event handlers for each calculator button sending that buttons value to the runCalculator() function
