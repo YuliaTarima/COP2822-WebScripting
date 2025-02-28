@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- saved from url=(0117)http://localhost:63342/code/ch2.2_formValidation/index.html?_ijt=1sh0rgs4vidio7an97u2qluhvp&_ij_reload=RELOAD_ON_SAVE -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Hands-on Project 2-2 - Form Validation</title>
+    <link rel="stylesheet" href="./Hands-on Project 2-2 - Form Validation_files/styles.css">
+</head>
+
+<body>
+<header>
+    <h1>2.2 Form Validation</h1>
+</header>
+
+<article>
+    <h2>Contact Information</h2>
+    <form>
+        <fieldset id="contactinfo">
+            <label for="nameinput">
+                Name
+                <input type="text" id="name" name="name">
+            </label>
+            <label for="emailinput">
+                Email
+                <input type="text" id="email" name="email">
+            </label>
+            <label for="phoneinput">
+                Phone
+                <input type="text" id="phone" name="phone">
+            </label>
+        </fieldset>
+        <fieldset id="submitbutton">
+            <input type="button" id="submit" value="Submit">
+        </fieldset>
+    </form>
+</article>
+
+<!-- Link JavaScript file -->
+<script src="./Hands-on Project 2-2 - Form Validation_files/index.js.download"></script>
+
+
+<script>
+(function() {
+  var ws = new WebSocket('ws://' + window.location.host + 
+             '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
+             'referrer=' + encodeURIComponent(window.location.pathname));
+  ws.onmessage = function (msg) {
+      if (msg.data === 'reload') {
+          window.location.reload();
+      }
+      if (msg.data.startsWith('update-css ')) {
+          var messageId = msg.data.substring(11);
+          var links = document.getElementsByTagName('link');
+          for (var i = 0; i < links.length; i++) {
+              var link = links[i];
+              if (link.rel !== 'stylesheet') continue;
+              var clonedLink = link.cloneNode(true);
+              var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
+              if (newHref !== link.href) {
+                clonedLink.href = newHref;
+              }
+              else {
+                var indexOfQuest = newHref.indexOf('?');
+                if (indexOfQuest >= 0) {
+                  // to support ?foo#hash 
+                  clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' + 
+                                    newHref.substring(indexOfQuest + 1);
+                }
+                else {
+                  clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
+                }
+              }
+              link.replaceWith(clonedLink);
+          }
+      }
+  };
+})();
+</script><div id="hl-aria-live-message-container" aria-live="polite" class="visually-hidden"></div><div id="hl-aria-live-alert-container" role="alert" aria-live="assertive" class="visually-hidden"></div></body></html>

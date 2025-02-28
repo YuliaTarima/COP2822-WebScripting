@@ -39,7 +39,7 @@ alert may the issue arise.
 
 In 2-2a I learned that the most direct way to associate a function with 
 an event is by using an event handler. However, I prefer not to mix HTML 
-and JavaScript code in the same document, and One drawback of adding 
+and JavaScript code in the same document, and one drawback of adding 
 event handlers as HTML attributes is that they place JavaScript code 
 within the HTML file. 
 
@@ -63,7 +63,7 @@ I used the extra check to listen when the user leaves the input filed
 using the blur event listener to ensure the accurate final conversion
 for the last entered value (both ways).
 
-I also challenged myself to use CSS variables.
+I also challenged myself to use custom CSS and CSS variables.
 
 2. Upload: Video file (60 seconds minimum)
 
