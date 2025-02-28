@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Select the Fahrenheit and Celsius input fields
     const fInput = document.getElementById("fValue");
     const cInput = document.getElementById("cValue");
+    // sanitize
+    fInput.value = fInput.value.trim();
+    cInput.value = cInput.value.trim();
 
     // Only set default values if fields are empty
     if (!fInput.value) fInput.value = 32;
@@ -13,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isNaN(numValue)) {
             // let the user know of the input error
             alert(`Please enter a valid numeric value for ${type}.`);
-            console.log('checkNumericInput returns: ', parseFloat(value), 'for value ', value );
+            console.log('checkNumericInput returns: ', parseFloat(value), 'for value ', value);
             // Indicate that the input is invalid
             return false;
         }
@@ -33,21 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Update the Celsius input field, rounding to 2 decimal places
             cInput.value = cTemp.toFixed(2);
-        }
-    }
-
-    // Function to convert Celsius to Fahrenheit
-    function convertCtoF() {
-        // Get the Celsius value and convert it to a number
-        let cTemp = parseFloat(cInput.value);
-
-        // Check if the input is a valid number
-        if (!isNaN(cTemp)) {
-            // Apply the conversion formula: F = C * 1.8 + 32
-            let fTemp = cTemp * 1.8 + 32;
-
-            // Update the Fahrenheit input field, rounding to 2 decimal places
-            fInput.value = fTemp.toFixed(2);
         }
     }
 
@@ -84,4 +72,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
         convertCtoF(); // Ensures final conversion is accurate after tabbing out
     });
+
+    // Function to convert Celsius to Fahrenheit
+    function convertCtoF() {
+        // Get the Celsius value and convert it to a number
+        let cTemp = parseFloat(cInput.value);
+
+        // Check if the input is a valid number
+        if (!isNaN(cTemp)) {
+            // Apply the conversion formula: F = C * 1.8 + 32
+            let fTemp = cTemp * 1.8 + 32;
+
+            // Update the Fahrenheit input field, rounding to 2 decimal places
+            fInput.value = fTemp.toFixed(2);
+        }
+    }
 });
