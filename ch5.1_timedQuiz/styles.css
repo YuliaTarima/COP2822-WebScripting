@@ -1,8 +1,11 @@
-/*  JavaScript 7th Edition
-    Chapter 5
-    Hands-on Project 5-1
+/*   ******* Requirement 1 *******
+     ******* Enter your name and the date in the comment section of each file *******
+     JavaScript 7th Edition
+     Chapter 5
+     Hands-on Project 5-1
 
-    Filename: styles.css
+     Author: Yulia Tarima
+     Date: 04/08/2025
 */
 
 /* apply a natural box layout model to all elements */
@@ -46,6 +49,19 @@ body {
     background: white;
     margin: 0 auto;
     font-family: Verdana, Geneva, sans-serif;
+    /*height: 100%; !* Ensure body takes full height *!*/
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 500px;
+    background: url('grass.jpg') no-repeat center center;
+    background-size: cover; /* Makes the image cover the width and height */
+    z-index: -1;
 }
 
 ol, ul {
@@ -54,12 +70,15 @@ ol, ul {
 
 /* page header */
 header {
-    background: #5472B2;
+    background: #b254a6;
     width: 100%;
     color: #FFFFFF;
     font-size: 48px;
     text-align: center;
     line-height: 1.5em;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-top: 20px;
 }
 
 /* main content */
@@ -69,6 +88,11 @@ article {
     text-align: left;
     background: #FFDB70;
     position: relative;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Horizontal offset, vertical offset, blur radius, color */
+    background-color: rgb(56, 179, 163, 0.8);
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); /* White shadow with some blur */
 }
 
 
@@ -77,8 +101,9 @@ article {
 article h2 {
     font-weight: bold;
     font-size: 24px;
-    padding: 20px 0;
+    padding: 15px 0;
     text-align: center;
+    color: rgb(161, 52, 147);;
 }
 
 
@@ -99,18 +124,24 @@ div#instructions {
 
 div#instructions p {
     line-height: 2;
-    padding: 15px;
+    padding: 0 15px;
     font-size: 1.2em;
+}
+
+div#instructions input {
+    border: 1px solid white !important;
 }
 
 div#instructions input#startquiz {
     display: block;
     margin: 10px auto;
+    padding: 4px 0;
     font-size: 1.8em;
     width: 180px;
     text-align: center;
-    border-radius: 20px;
-    background-color: #1BA8BF;
+    border-radius: 10px;
+    border: 2px solid white;
+    background-color: rgba(178, 84, 166, 0.92);
     color: ivory;
     cursor: pointer;
     user-select: none;
@@ -124,8 +155,9 @@ div#instructions input#quizclock {
     text-align: center;
     font-size: 60px;
     color: white;
-    background-color: rgb(40, 40, 40);
+    background-color: rgba(178, 84, 166, 0.93);
     user-select: none;
+    border-radius: 10px;
 }
 
 div#quiz {
@@ -157,25 +189,29 @@ div#quiz input {
     font-size: 1.2em;
     width: 90px;
     text-align: center;
+    border-radius: 5px;
+    background-color: rgba(15, 215, 175, 0.5);
+    border: 1px solid white !important;
 }
 
 div#quiz input.wronganswer {
     color: white;
-    background-color: red;
+    background-color: rgba(248, 16, 182, 0.5);
 }
 
 div#overlay {
-    width: 660px;
+    width: 600px;
     height: var(--main-height);
     position: absolute;
     top: 0;
     left: 300px;
-    z-index: 1
+    z-index: 1;
+    border-radius: 10px;
 }
 
 div#overlay.hidequiz {
     display: block;
-    background-color: #FFDB70;
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 div#overlay.showquiz {
@@ -188,11 +224,13 @@ div#overlay.showquiz {
 }
 
 .fa-question-circle {
-   color: #abb5b3;
+    color: #abb5b3;
 }
+
 .fa-check-circle {
     color: #08ca2f;
 }
+
 .fa-times-circle {
     color: #ca0808;
 }

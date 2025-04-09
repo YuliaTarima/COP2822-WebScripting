@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- ******* Requirement 1 *******
+     ******* Enter your name and the date in the comment section of each file *******
+     JavaScript 7th Edition
+     Chapter 5
+     Hands-on Project 5-1
+
+     Author: Yulia Tarima
+     Date: 04/08/2025
+  -->
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1.0" name="viewport">
+    <title>Hands-on Project 5-1</title>
+    <link href="styles.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--   ******* Requirement 2 *******
+     ******* Add a script element to load the .js file, deferring the app until the page is loaded *******
+     -->
+    <script defer src="Yulia_Tarima_project05-01.js"></script>
+</head>
+
+<body>
+<header>
+    <h1>
+        Hands-on Project 5-1
+    </h1>
+</header>
+
+<article>
+    <h2>Algebra I Practice Quiz</h2>
+
+    <div id="container">
+        <div id="instructions">
+            <p>Click the <strong>Start Quiz</strong> button below
+                to start the quiz and begin the countdown. Upon completion, incorrect answers
+                will be marked in red. Retake the quiz as many times as you wish.
+            </p>
+            <input id="startquiz" value="Start Quiz"/>
+            <input id="quizclock"/>
+        </div>
+
+        <div id="quiz">
+            <table id="quizTable">
+                <tr>
+                    <td>1)</td>
+                    <td>5 + 2<em>x</em> = 25</td>
+                    <td><em>x</em> = <input id="question1"/></td>
+<!--                    <td><span id="answer1"><i class="fa fa-question-circle"></i></span></td>-->
+                </tr>
+                <tr>
+                    <td>2)</td>
+                    <td>30 &ndash; 5<em>x</em> = 10</td>
+                    <td><em>x</em> = <input id="question2"/></td>
+<!--                    <td><span><i class="fa fa-question-circle"></i></span></td>-->
+                </tr>
+                <tr>
+                    <td>3)</td>
+                    <td>6 + 3<em>x</em> = &ndash;12</td>
+                    <td><em>x</em> = <input id="question3"/></td>
+<!--                    <td><span id="answer3"><i class="fa fa-question-circle"></i></span></td>-->
+                </tr>
+                <tr>
+                    <td>4)</td>
+                    <td>44 &ndash; 12<em>x</em> = &ndash;16</td>
+                    <td><em>x</em> = <input id="question4"/></td>
+<!--                    <td><span id="answer4"><i class="fa fa-question-circle"></i></span></td>-->
+                </tr>
+                <tr>
+                    <td>5)</td>
+                    <td>48 + 6<em>x</em> = 6</td>
+                    <td><em>x</em> = <input id="question5"/></td>
+<!--                    <td><span id="answer5"><i class="fa fa-question-circle"></i></span></td>-->
+                </tr>
+            </table>
+        </div>
+
+        <div class="hidequiz" id="overlay"></div>
+    </div>
+</article>
+</body>
+</html>

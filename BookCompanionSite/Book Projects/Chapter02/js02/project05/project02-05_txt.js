@@ -6,7 +6,7 @@
       Author: 
       Date:   
 
-      Filename: index.js
+      Filename: Yulia_Tarima_project05-01.js
  */
  
 // Add event handlers for each calculator button sending that buttons value to the runCalculator() function
