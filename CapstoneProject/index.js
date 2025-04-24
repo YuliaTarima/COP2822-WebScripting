@@ -111,8 +111,32 @@ document.querySelector('.reset-btn .btn').onclick = () =>{
 // Render image gallery function
 const imgGalleryContainer = document.querySelector('.image-container');
 
+// function renderGallery(images) {
+//     imgGalleryContainer.innerHTML = ''; // Clear existing content
+//
+//     images.forEach((img, index) => {
+//         const card = document.createElement('div');
+//         card.className = 'image-card';
+//         card.innerHTML = `
+//             <img src="${img.URL}" alt="${img.title}" />
+//             <h3 class="galleryCardHeading">${img.title}</h3>
+//             <p class="imgDescription">${img.description}</p>
+//             <button class="remove-btn" data-index="${index}">Remove Image</button>
+//         `;
+//
+//         // Add event listener to remove button
+//         card.querySelector('.remove-btn').addEventListener('click', (e) => {
+//             e.stopPropagation(); // Prevent triggering other events like image popup
+//             images.splice(index, 1); // Remove from array
+//             renderGallery(images);   // Re-render gallery
+//         });
+//
+//         imgGalleryContainer.appendChild(card);
+//     });
+// }
+
 function renderGallery(images) {
-    imgGalleryContainer.innerHTML = ''; // Clear existing content
+    imgGalleryContainer.innerHTML = '';
 
     images.forEach((img, index) => {
         const card = document.createElement('div');
@@ -121,15 +145,50 @@ function renderGallery(images) {
             <img src="${img.URL}" alt="${img.title}" />
             <h3 class="galleryCardHeading">${img.title}</h3>
             <p class="imgDescription">${img.description}</p>
-            <button class="remove-btn" data-index="${index}">Remove Image</button>
+            <button class="remove-btn" data-index="${index}">Remove</button>
+            <button class="update-btn" data-index="${index}">Update Image</button>
         `;
 
-        // Add event listener to remove button
+        // Remove button
         card.querySelector('.remove-btn').addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent triggering other events like image popup
-            images.splice(index, 1); // Remove from array
-            renderGallery(images);   // Re-render gallery
+            e.stopPropagation();
+            images.splice(index, 1);
+            renderGallery(images);
         });
+
+        // // Update button
+        // card.querySelector('.update-btn').addEventListener('click', (e) => {
+        //     e.stopPropagation();
+        //     const newTitle = prompt("Enter new title:", img.title);
+        //     const newDesc = prompt("Enter new description:", img.description);
+        //
+        //     if (newTitle && newDesc) {
+        //         // Update only title and description, not URL
+        //         images[index] = {
+        //             ...images[index],
+        //             title: newTitle,
+        //             description: newDesc
+        //         };
+        //         renderGallery(images);
+        //     }
+        // });
+        // Event listener for the "Update" button
+        card.querySelector('.update-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            // Prompt for new title and description
+            const newTitle = prompt("Enter new title:", img.title);
+            const newDesc = prompt("Enter new description:", img.description);
+
+            // if (newTitle && newDesc) {
+                // Update only title and description, not the URL
+                images[index].title = newTitle || 'Untitled';
+                images[index].description = newDesc || '';
+
+                renderGallery(images); // Re-render the gallery after update
+            // }
+            renderGallery(images); // Re-render the gallery after update
+        })
 
         imgGalleryContainer.appendChild(card);
     });
