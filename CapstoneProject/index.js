@@ -110,16 +110,27 @@ document.querySelector('.reset-btn .btn').onclick = () =>{
 };
 // Render image gallery function
 const imgGalleryContainer = document.querySelector('.image-container');
+
 function renderGallery(images) {
     imgGalleryContainer.innerHTML = ''; // Clear existing content
-    images.forEach(img => {
+
+    images.forEach((img, index) => {
         const card = document.createElement('div');
         card.className = 'image-card';
         card.innerHTML = `
-      <img src="${img.URL}" alt="${img.title}" />
-      <h3 class="galleryCardHeading">Title: ${img.title}</h3>
-      <p class="imgDescription">Description: ${img.description}</p>
-    `;
+            <img src="${img.URL}" alt="${img.title}" />
+            <h3 class="galleryCardHeading">${img.title}</h3>
+            <p class="imgDescription">${img.description}</p>
+            <button class="remove-btn" data-index="${index}">Remove Image</button>
+        `;
+
+        // Add event listener to remove button
+        card.querySelector('.remove-btn').addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent triggering other events like image popup
+            images.splice(index, 1); // Remove from array
+            renderGallery(images);   // Re-render gallery
+        });
+
         imgGalleryContainer.appendChild(card);
     });
 }
@@ -136,16 +147,6 @@ inputFile.addEventListener('change', function () {
     const image = this.files[0]
     if(image.size < 2000000) {
         const reader = new FileReader();
-        // reader.onload = ()=> {
-        //     // const allImg = imgArea.querySelectorAll('img');
-        //     // allImg.forEach(item=> item.remove());
-        //     const imgUrl = reader.result;
-        //     const img = document.createElement('img');
-        //     img.src = imgUrl;
-        //     imgArea.appendChild(img);
-        //     imgArea.classList.add('active');
-        //     imgArea.dataset.img = image.name;
-        // }
         reader.onload = () => {
             const imgUrl = reader.result;
 
@@ -166,40 +167,22 @@ inputFile.addEventListener('change', function () {
             document.getElementById('imageDesc').value = '';
         };
 
-
-
         reader.readAsDataURL(image);
     } else {
         alert("Image size more than 2MB");
     }
 })
 
-// // Elarged Image Pop-Up
-// function setupImagePop() {
-//     const imagePop = document.querySelector('.image-popup');
-//     const galleryImages = document.querySelectorAll('.image-container');
-//
-//     galleryImages.forEach(img => {
-//         img.onclick = () => {
-//             const imageSrc = img.getAttribute('src');
-//             imagePop.style.display = 'flex';
-//             imagePop.querySelector('img').src = imageSrc;
-//         };
-//     });
-//
-//     imagePop.onclick = () => {
-//         imagePop.style.display = 'none';
-//     };
-// }
-
 function setupImagePop() {
     const imagePop = document.querySelector('.image-popup');
-    const galleryCards = document.querySelectorAll('.image-container .image-card');
+    const galleryImages = document.querySelectorAll('.image-container .image-card img');
 
-    galleryCards.forEach(card => {
-        card.onclick = () => {
-            const clonedCard = card.cloneNode(true); // Deep clone the card
-            imagePop.innerHTML = ''; // Clear previous content
+    galleryImages.forEach(img => {
+        img.onclick = (e) => {
+            e.stopPropagation(); // Prevent bubbling up to card
+            const card = img.closest('.image-card');
+            const clonedCard = card.cloneNode(true);
+            imagePop.innerHTML = '';
             imagePop.appendChild(clonedCard);
             imagePop.style.display = 'flex';
         };
@@ -207,7 +190,7 @@ function setupImagePop() {
 
     imagePop.onclick = () => {
         imagePop.style.display = 'none';
-        imagePop.innerHTML = ''; // Optional: clear on close
+        imagePop.innerHTML = '';
     };
 }
 
