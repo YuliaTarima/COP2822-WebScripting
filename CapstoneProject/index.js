@@ -5,103 +5,103 @@ let galleryImages = document.querySelectorAll('.image-imgContainer img');
 const imageArr = [
     {
         "URL": "images/img-1.jpg",
-        "title": "images/img-1.jpg",
-        "description": "images/img-1.jpg"
+        "title": "Yellow",
+        "description": "Fluffy, yellow, and cute"
     },
     {
         "URL": "images/img-2.svg",
-        "title": "images/img-2.svg",
-        "description": "images/img-2.svg"
+        "title": "Yum",
+        "description": "It's the most wonderful time of the year"
     },
     {
         "URL": "images/img-3.png",
-        "title": "images/img-3.png",
-        "description": "images/img-3.png"
+        "title": "Corn",
+        "description": "Grown worldwide"
     },
     {
         "URL": "images/img-4.jpg",
-        "title": "images/img-4.jpg",
-        "description": "images/img-4.jpg"
+        "title": "Marine Mammal",
+        "description": "Intelligent, playful, friendly"
     },
     {
         "URL": "images/img-5.jpg",
-        "title": "images/img-5.jpg",
-        "description": "images/img-5.jpg"
+        "title": "Bushy tails",
+        "description": "With a hint of nut-hoarding habits"
     },
     {
         "URL": "images/img-6.png",
-        "title": "images/img-6.png",
-        "description": "images/img-6.png"
+        "title": "Noodles",
+        "description": "Wanna some?"
     },
     {
         "URL": "images/img-7.svg",
-        "title": "images/img-7.svg",
-        "description": "images/img-7.svg"
+        "title": "Penguin Love",
+        "description": "Mate for life"
     },
     {
         "URL": "images/img-8.jpg",
-        "title": "images/img-8.jpg",
-        "description": "images/img-8.jpg"
+        "title": "Bold",
+        "description": "Built for any storm"
     },
     {
         "URL": "images/img-9.png",
-        "title": "images/img-9.png",
-        "description": "images/img-9.png"
+        "title": "BFF",
+        "description": "A timeless chase"
     },
     {
         "URL": "images/img-10.svg",
-        "title": "images/img-10.svg",
-        "description": "images/img-10.svg"
+        "title": "Baby Shark",
+        "description": "To-do, to-do, do-do"
     },
     {
         "URL": "images/img-11.jpg",
-        "title": "images/img-11.jpg",
-        "description": "images/img-11.jpg"
+        "title": "Orange",
+        "description": "Philosophy"
     },
     {
         "URL": "images/img-12.svg",
-        "title": "images/img-12.svg",
-        "description": "images/img-12.svg"
+        "title": "Vacation",
+        "description": "Paradise"
     },
     {
         "URL": "images/img-13.png",
-        "title": "images/img-13.png",
-        "description": "images/img-13.png"
+        "title": "Grilled",
+        "description": "Eggs-tremely flavorful"
     },
     {
         "URL": "images/img-14.jpg",
-        "title": "images/img-14.jpg",
-        "description": "images/img-14.jpg"
+        "title": "Coffee",
+        "description": "The world can wait"
     },
     {
         "URL": "images/img-15.png",
-        "title": "images/img-15.png",
-        "description": "images/img-15.png"
+        "title": "Hamburger",
+        "description": "How is it connected to Hamburg?"
     },
     {
         "URL": "images/img-16.svg",
-        "title": "images/img-16.svg",
-        "description": "images/img-16.svg"
+        "title": "Party",
+        "description": "Ready to pop some fun?"
     },
     {
         "URL": "images/img-17.jpg",
-        "title": "images/img-17.jpg",
-        "description": "images/img-17.jpg"
+        "title": "Topped with syrup",
+        "description": "Warm stacks of happiness"
     },
     {
         "URL": "images/img-18.svg",
-        "title": "images/img-18.svg",
-        "description": "images/img-18.svg"
+        "title": "Nature’s smile",
+        "description": "Bright and colorful beauty"
     },
     {
         "URL": "images/img-19.png",
-        "title": "images/img-19.png",
-        "description": "images/img-19.png"
+        "title": "Pink",
+        "description": "Touch of sweetness"
     },
     {
         "URL": "images/img-20.jpg",
-        "title": "images/img-20.jpg",
-        "description": "images/img-20.jpg"
+        "title": "Timeless",
+        "description": "Speak what words cannot"
     }
 ];
 // Reset the Gallery
@@ -111,32 +111,11 @@ document.querySelector('.reset-btn .btn').onclick = () =>{
 // Render image gallery function
 const imgGalleryContainer = document.querySelector('.image-container');
 
-// function renderGallery(images) {
-//     imgGalleryContainer.innerHTML = ''; // Clear existing content
-//
-//     images.forEach((img, index) => {
-//         const card = document.createElement('div');
-//         card.className = 'image-card';
-//         card.innerHTML = `
-//             <img src="${img.URL}" alt="${img.title}" />
-//             <h3 class="galleryCardHeading">${img.title}</h3>
-//             <p class="imgDescription">${img.description}</p>
-//             <button class="remove-btn" data-index="${index}">Remove Image</button>
-//         `;
-//
-//         // Add event listener to remove button
-//         card.querySelector('.remove-btn').addEventListener('click', (e) => {
-//             e.stopPropagation(); // Prevent triggering other events like image popup
-//             images.splice(index, 1); // Remove from array
-//             renderGallery(images);   // Re-render gallery
-//         });
-//
-//         imgGalleryContainer.appendChild(card);
-//     });
-// }
-
 function renderGallery(images) {
     imgGalleryContainer.innerHTML = '';
+
+    // Update counter
+    document.getElementById('galleryCounter').textContent = `Images: ${images.length}`;
 
     images.forEach((img, index) => {
         const card = document.createElement('div');
@@ -156,42 +135,20 @@ function renderGallery(images) {
             renderGallery(images);
         });
 
-        // // Update button
-        // card.querySelector('.update-btn').addEventListener('click', (e) => {
-        //     e.stopPropagation();
-        //     const newTitle = prompt("Enter new title:", img.title);
-        //     const newDesc = prompt("Enter new description:", img.description);
-        //
-        //     if (newTitle && newDesc) {
-        //         // Update only title and description, not URL
-        //         images[index] = {
-        //             ...images[index],
-        //             title: newTitle,
-        //             description: newDesc
-        //         };
-        //         renderGallery(images);
-        //     }
-        // });
         // Event listener for the "Update" button
         card.querySelector('.update-btn').addEventListener('click', (e) => {
             e.stopPropagation();
-
             // Prompt for new title and description
             const newTitle = prompt("Enter new title:", img.title);
             const newDesc = prompt("Enter new description:", img.description);
-
-            // if (newTitle && newDesc) {
-                // Update only title and description, not the URL
-                images[index].title = newTitle || 'Untitled';
-                images[index].description = newDesc || '';
-
-                renderGallery(images); // Re-render the gallery after update
-            // }
+            images[index].title = newTitle || 'Untitled';
+            images[index].description = newDesc || '';
             renderGallery(images); // Re-render the gallery after update
         })
 
         imgGalleryContainer.appendChild(card);
     });
+    setupImagePop(); // 💡 Re-bind click listeners after rendering
 }
 // Reset the gallery
 document.querySelector('.reset-btn .btn').onclick = () =>{
@@ -201,7 +158,7 @@ document.querySelector('.reset-btn .btn').onclick = () =>{
 uploadImage.addEventListener('click', function () {
     inputFile.click();
 })
-// Uploaded Image Preview
+
 inputFile.addEventListener('change', function () {
     const image = this.files[0]
     if(image.size < 2000000) {
@@ -237,22 +194,40 @@ function setupImagePop() {
     const galleryImages = document.querySelectorAll('.image-container .image-card img');
 
     galleryImages.forEach(img => {
-        img.onclick = (e) => {
-            e.stopPropagation(); // Prevent bubbling up to card
+        img.onclick = () => {
             const card = img.closest('.image-card');
             const clonedCard = card.cloneNode(true);
             imagePop.innerHTML = '';
             imagePop.appendChild(clonedCard);
             imagePop.style.display = 'flex';
+
+            const index = [...imgGalleryContainer.children].indexOf(card);
+
+            // Remove button inside popup
+            clonedCard.querySelector('.remove-btn').onclick = () => {
+                imageArr.splice(index, 1);
+                renderGallery(imageArr);
+                imagePop.style.display = 'none';
+            };
+
+            // Update button inside popup
+            clonedCard.querySelector('.update-btn').onclick = () => {
+                const newTitle = prompt("New Title:", imageArr[index].title);
+                const newDesc = prompt("New Description:", imageArr[index].description);
+                imageArr[index].title = newTitle || "Untitled";
+                imageArr[index].description = newDesc || '';
+                renderGallery(imageArr);
+                imagePop.style.display = 'none';
+            };
         };
     });
 
-    imagePop.onclick = () => {
-        imagePop.style.display = 'none';
-        imagePop.innerHTML = '';
+    imagePop.onclick = (e) => {
+        if (e.target === imagePop) {
+            imagePop.style.display = 'none';
+            imagePop.innerHTML = '';
+        }
     };
 }
 
-// any reference needs to happen after the elements are added to the DOM.
 renderGallery(imageArr);
-setupImagePop();

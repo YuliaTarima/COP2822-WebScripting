@@ -38,11 +38,6 @@
 }
 
 body{
-    /*    display: flex;*/
-    /*    justify-content: center;*/
-    /*    align-items: center;*/
-    /*    min-height: 100vh;*/
-    /*    background: var(--light-blue);*/
     background-color: var(--light-bg);
 }
 .heading{
@@ -53,12 +48,21 @@ body{
     text-align: center;
 }
 
+#galleryCounter{
+    font-weight: bold;
+    box-shadow: var(--box-shadow);
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid var(--cyan);
+}
+
 .img-preview-container {
     max-width: 400px;
     width: 100%;
+    padding: 0 3px;
     background: #fff;
-    /*padding: 10px;*/
-    /*border-radius: 30px;*/
+    border: 1px solid var(--cyan);
+    box-shadow: var(--box-shadow);
 }
 .img-preview-container p{
     padding:10px;
@@ -66,14 +70,12 @@ body{
 }
 .img-preview-container p span {
     font-weight: 600;
-    /*padding: 10px;*/
 }
 
 .img-area {
     position: relative;
     width: 100%;
     background: var(--grey);
-    /*overflow: hidden;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -183,8 +185,7 @@ body{
     padding:20px 0;
 }
 
-.btn, .select-img-btn{
-    /*margin-top: 10px;*/
+.btn, .select-img-btn, .update-btn, .remove-btn{
     display: inline-block;
     padding:10px 30px;
     margin-top: 10px;
@@ -197,7 +198,7 @@ body{
     text-align: center;
 }
 
-.btn:hover, .select-img-btn:hover {
+.btn:hover, .select-img-btn:hover, .update-btn:hover, .remove-btn:hover {
     background-color: var(--cyan);
     color:var(--white);
 }
@@ -246,22 +247,22 @@ body{
     font-weight: 500;
 }
 
-#side-menu{
-    position: fixed;
-    top:20px; left:20px;
-    height: 50px;
-    width: 50px;
-    line-height: 50px;
-    text-align: center;
-    background-color: var(--white);
-    color:var(--black);
-    cursor: pointer;
-    font-size: 25px;
-    z-index: 1100;
-    box-shadow: var(--box-shadow);
-    border:var(--border);
-    display: none;
-}
+/*#side-menu{*/
+/*    position: fixed;*/
+/*    top:20px; left:20px;*/
+/*    height: 50px;*/
+/*    width: 50px;*/
+/*    line-height: 50px;*/
+/*    text-align: center;*/
+/*    background-color: var(--white);*/
+/*    color:var(--black);*/
+/*    cursor: pointer;*/
+/*    font-size: 25px;*/
+/*    z-index: 1100;*/
+/*    box-shadow: var(--box-shadow);*/
+/*    border:var(--border);*/
+/*    display: none;*/
+/*}*/
 
 .image-popup{
     position: fixed;
