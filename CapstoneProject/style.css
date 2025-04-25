@@ -61,7 +61,7 @@ body{
     width: 100%;
     padding: 0 3px;
     background: #fff;
-    border: 1px solid var(--cyan);
+    /*border: 1px solid var(--cyan);*/
     box-shadow: var(--box-shadow);
 }
 .img-preview-container p{
@@ -185,7 +185,7 @@ body{
     padding:20px 0;
 }
 
-.btn, .select-img-btn, .update-btn, .remove-btn{
+.btn, .select-img-btn, .upload-img-btn, .update-btn, .remove-btn{
     display: inline-block;
     padding:10px 30px;
     margin-top: 10px;
@@ -198,7 +198,7 @@ body{
     text-align: center;
 }
 
-.btn:hover, .select-img-btn:hover, .update-btn:hover, .remove-btn:hover {
+.btn:hover, .select-img-btn:hover, .upload-img-btn:hover, .update-btn:hover, .remove-btn:hover {
     background-color: var(--cyan);
     color:var(--white);
 }
