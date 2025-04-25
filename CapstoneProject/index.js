@@ -1,7 +1,12 @@
+// Get the Select/Upload button
 const selectOrUploadBtn = document.querySelector('.select-img-btn');
+// Get the file input element
 const inputFile = document.querySelector('#file');
+// Get the area where image preview is shown
 const imgArea = document.querySelector('.img-area');
+// Get the container where the gallery images will be rendered
 const imgGalleryContainer = document.querySelector('.image-container');
+// Get all images already present in the gallery (if any)
 let galleryImages = document.querySelectorAll('.image-imgContainer img');
 const imageArr = [
     {
@@ -105,20 +110,25 @@ const imageArr = [
         "description": "Speak what words cannot"
     }
 ];
-// Reset the Gallery
-document.querySelector('.reset-btn .btn').onclick = () =>{
+// Add click listener on reset button to reload the page and reset everything
+document.querySelector('.reset-btn .btn').onclick = () => {
     window.location.reload();
 };
-// Render image gallery function
+
+// Function to render the image gallery dynamically from an array
 function renderGallery(images) {
+    // Clear the gallery container before re-rendering
     imgGalleryContainer.innerHTML = '';
 
-    // Update counter
+    // Update the image count
     document.getElementById('galleryCounter').textContent = `Images: ${images.length}`;
 
+    // Loop through each image and create a card
     images.forEach((img, index) => {
         const card = document.createElement('div');
         card.className = 'image-card';
+
+        // Create card HTML structure with image, title, description, and buttons
         card.innerHTML = `
             <img src="${img.URL}" alt="${img.title}" />
             <h3 class="galleryCardHeading">${img.title}</h3>
@@ -127,172 +137,185 @@ function renderGallery(images) {
             <button class="update-btn" data-index="${index}">Update Image</button>
         `;
 
-        // Remove button
+        // Handle remove button click: remove image from array and re-render gallery
         card.querySelector('.remove-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             images.splice(index, 1);
             renderGallery(images);
         });
 
-        // Event listener for the "Update" button
+        // Handle update button click: prompt for new title/description and update
         card.querySelector('.update-btn').addEventListener('click', (e) => {
             e.stopPropagation();
-            // Prompt for new title and description and validate
-            let newTitle = prompt("Enter new title:", img.title)?.trim();
-            let newDesc = prompt("Enter new description:", img.description)?.trim();
 
-            // Title validation loop
+            // Prompt user to enter new title
+            let newTitle = prompt("Enter new title:", img.title)?.trim();
+            // Keep asking if title is empty
             while (!newTitle) {
+                // User pressed Cancel
+                if(newTitle === null || newTitle === undefined) {return;}
                 newTitle = prompt("Enter new title (required):")?.trim();
             }
-            // Description validation loop
+
+            // Prompt user to enter new description
+            let newDesc = prompt("Enter new description:", img.description)?.trim();
+            // Keep asking if description is empty
             while (!newDesc) {
+                if(newDesc === null || newDesc === undefined) {return;}
                 newDesc = prompt("Enter new description (required):")?.trim();
             }
 
-            // Update the image object
+            // Update the image details
             images[index].title = newTitle;
             images[index].description = newDesc;
-            // Re-render the gallery after update
+
+            // Re-render updated gallery
             renderGallery(images);
-        })
+        });
+
+        // Add the card to the gallery container
         imgGalleryContainer.appendChild(card);
     });
-    // Re-bind click listeners after rendering
+
+    // Bind click-to-expand image popup after rendering
     setupImagePop();
 }
-// When the Select/Upload button is clicked
+
+// Add event listener to Select/Upload button
 selectOrUploadBtn.addEventListener('click', () => {
-    // Only trigger the file selection dialog if the button is in "select" mode
+    // Trigger file selection dialog only if in "select" mode
     if (selectOrUploadBtn.classList.contains('select-img-btn')) {
-        inputFile.click(); // Opens file picker dialog
+        inputFile.click();
     }
 });
 
-// Listen for when the user selects an image file
+// When the file input changes (user selects an image)
 inputFile.addEventListener('change', function () {
-    const image = this.files[0]; // Get the selected image file
+    const image = this.files[0];
 
-    // Check if the file is under 2MB
+    // Only proceed if file is under 2MB
     if (image.size < 2000000) {
-        const reader = new FileReader(); // Create FileReader to read image content
+        const reader = new FileReader();
 
-        // Once the file is read as a data URL
+        // Once image is read successfully
         reader.onload = () => {
-            const imgUrl = reader.result; // Data URL of the image
-            const imgArea = document.querySelector('.img-area'); // Container for image or upload icon
-            // Clear any existing content inside the imgArea
+            const imgUrl = reader.result;
+
+            // Clear the preview area
             imgArea.innerHTML = '';
-            // Add the image to the preview area
+
+            // Show image preview
             imgArea.innerHTML = `<img src="${imgUrl}">`;
 
-            // Change the button appearance and behavior to "Upload Image"
+            // Switch button to "Upload" mode
             selectOrUploadBtn.textContent = "Upload Image";
             selectOrUploadBtn.classList.remove('select-img-btn');
             selectOrUploadBtn.classList.add('upload-img-btn');
 
-            // Change the button behavior to handle the actual upload
+            // Redefine click handler to perform image upload
             selectOrUploadBtn.onclick = () => {
-                // Get values from title and description input fields
+                // Get user-provided title and description
                 const titleInput = document.getElementById('imageTitle');
                 const descInput = document.getElementById('imageDesc');
-                // const title = document.getElementById('imageTitle').value.trim || 'Untitled';
-                // const description = document.getElementById('imageDesc').value.trim || '';
 
-                // Sanitize the input values
+                // Clean the input values
                 const title = titleInput.value.trim();
                 const description = descInput.value.trim();
 
-                // Validate input values
+                // Validate title
                 if (!title) {
                     alert("Please enter an image title.");
                     titleInput.focus();
                     return;
                 }
+
+                // Validate description
                 if (!description) {
                     alert("Please enter an image description.");
                     descInput.focus();
                     return;
                 }
 
-                // Add the new image to the beginning of the image array
+                // Add new image to the beginning of the array
                 imageArr.unshift({
                     URL: imgUrl,
                     title: title,
                     description: description
                 });
 
-                // Render the gallery with updated images
+                // Re-render updated gallery
                 renderGallery(imageArr);
-                setupImagePop(); // Rebind image popup handler
+                setupImagePop();
 
-                // Reset the image area to its default "cloud upload" icon and message
+                // Reset preview area to default upload icon
                 imgArea.innerHTML = `
                     <i class='bx bxs-cloud-upload icon'></i>
                     <p>Image size must be less than <span>2MB</span></p>
                 `;
-                imgArea.classList.remove('active'); // Remove active styling
+                imgArea.classList.remove('active');
 
-                // Clear input fields and file selection
+                // Clear inputs and reset file input
                 document.getElementById('imageTitle').value = '';
                 document.getElementById('imageDesc').value = '';
                 inputFile.value = '';
-                // previewedImage = null;
 
-                // Revert button back to "Select Image"
+                // Restore button to select mode
                 selectOrUploadBtn.textContent = "Select Image";
                 selectOrUploadBtn.classList.remove('upload-img-btn');
                 selectOrUploadBtn.classList.add('select-img-btn');
 
-                // Restore the button click behavior to open file selector
+                // Re-bind click to open file dialog
                 selectOrUploadBtn.onclick = () => inputFile.click();
             };
         };
 
-        // Read the image file as a data URL (base64-encoded string)
+        // Start reading the image file
         reader.readAsDataURL(image);
     } else {
-        // Alert if image is too large
+        // File is too large; show warning
         alert("Image size more than 2MB");
     }
 });
 
+// Function to handle image popup when clicked in gallery
 function setupImagePop() {
     const imagePop = document.querySelector('.image-popup');
     const galleryImages = document.querySelectorAll('.image-container .image-card img');
 
     galleryImages.forEach(img => {
         img.onclick = () => {
+            // Clone image card for popup display
             const card = img.closest('.image-card');
             const clonedCard = card.cloneNode(true);
             imagePop.innerHTML = '';
             imagePop.appendChild(clonedCard);
             imagePop.style.display = 'flex';
 
+            // Get index of the clicked image
             const index = [...imgGalleryContainer.children].indexOf(card);
 
-            // Remove button inside popup
+            // Remove image via popup
             clonedCard.querySelector('.remove-btn').onclick = () => {
                 imageArr.splice(index, 1);
                 renderGallery(imageArr);
                 imagePop.style.display = 'none';
             };
 
-            // Update button inside popup
+            // Update image via popup
             clonedCard.querySelector('.update-btn').onclick = () => {
                 const newTitleInput = prompt("New Title:", imageArr[index].title).trim();
                 const newDescInput = prompt("New Description:", imageArr[index].description).trim();
-
+                // Show alert if title or description is empty
                 const newTitle = newTitleInput.length > 0 ? newTitleInput : alert('Image Title is required!');
-                const newDesc = newDescInput.length > 0 ? newDescInput : alert('Image Description is required!')
-                imageArr[index].title = newTitle || "Untitled";
-                imageArr[index].description = newDesc || '';
+                const newDesc = newDescInput.length > 0 ? newDescInput : alert('Image Description is required!');
+
                 renderGallery(imageArr);
                 imagePop.style.display = 'none';
             };
         };
     });
 
+    // Hide popup if background is clicked
     imagePop.onclick = (e) => {
         if (e.target === imagePop) {
             imagePop.style.display = 'none';
@@ -301,4 +324,5 @@ function setupImagePop() {
     };
 }
 
+// Initial render of the gallery when page loads
 renderGallery(imageArr);
