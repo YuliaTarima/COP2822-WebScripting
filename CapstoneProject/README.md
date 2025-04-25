@@ -3,6 +3,9 @@
 ## Project Overview
 Create an interactive image gallery web application that manages a collection of images using JavaScript arrays. Students will demonstrate their ability to manipulate arrays, modify the DOM dynamically, and handle user events.
 
+## Deployed to Github Pages
+https://yuliatarima.github.io/image-gallery.github.io/
+
 ## Requirements
 
 ### Core Functionality
