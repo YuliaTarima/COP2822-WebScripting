@@ -154,40 +154,105 @@ function renderGallery(images) {
 document.querySelector('.reset-btn .btn').onclick = () =>{
     window.location.reload();
 };
-// Upload image
-uploadImage.addEventListener('click', function () {
-    inputFile.click();
-})
+// Get a reference to the Select/Upload button
+const selectOrUploadBtn = document.querySelector('.select-img-btn');
 
+// Variable to temporarily store the selected image and its preview URL
+let previewedImage = null;
+
+// When the Select/Upload button is clicked
+selectOrUploadBtn.addEventListener('click', () => {
+    // Only trigger the file selection dialog if the button is in "select" mode
+    if (selectOrUploadBtn.classList.contains('select-img-btn')) {
+        inputFile.click(); // Opens file picker dialog
+    }
+});
+
+// Listen for when the user selects an image file
 inputFile.addEventListener('change', function () {
-    const image = this.files[0]
-    if(image.size < 2000000) {
-        const reader = new FileReader();
+    const image = this.files[0]; // Get the selected image file
+
+    // Check if the file is under 2MB
+    if (image.size < 2000000) {
+        const reader = new FileReader(); // Create FileReader to read image content
+
+        // Once the file is read as a data URL
         reader.onload = () => {
-            const imgUrl = reader.result;
+            const imgUrl = reader.result; // Data URL of the image
+            const imgArea = document.querySelector('.img-area'); // Container for image or upload icon
+            // Clear any existing content inside the imgArea
+            imgArea.innerHTML = '';
+            imgArea.innerHTML = `<img src="${imgUrl}">`;
 
-            const title = document.getElementById('imageTitle').value || 'Untitled';
-            const description = document.getElementById('imageDesc').value || '';
+            // Create a new image element for preview
+            // const img = document.createElement('img');
+            // img.src = imgUrl;
+            // img.classList.add('preview-img');
+            // imgArea.appendChild(img);
+            // // Insert the new preview image
+            // imgArea.classList.add('active'); // Add styling class to indicate active preview
+            // imgArea.dataset.img = image.name; // Store the image name as a data attribute
 
-            imageArr.unshift({
-                URL: imgUrl,
-                title: title,
-                description: description
-            });
+            // Store the preview image data for later upload
+            // previewedImage = {
+            //     URL: imgUrl,
+            //     file: image
+            // };
 
-            renderGallery(imageArr);
-            setupImagePop();
+            // Change the button appearance and behavior to "Upload Image"
+            selectOrUploadBtn.textContent = "Upload Image";
+            selectOrUploadBtn.classList.remove('select-img-btn');
+            selectOrUploadBtn.classList.add('upload-img-btn');
 
-            // Clear input fields
-            document.getElementById('imageTitle').value = '';
-            document.getElementById('imageDesc').value = '';
+            // Change the button behavior to handle the actual upload
+            selectOrUploadBtn.onclick = () => {
+                // Get values from title and description input fields
+                const title = document.getElementById('imageTitle').value || 'Untitled';
+                const description = document.getElementById('imageDesc').value || '';
+
+                // Add the new image to the beginning of the image array
+                imageArr.unshift({
+                    // URL: previewedImage.URL,
+                    URL: imgUrl,
+                    title: title,
+                    description: description
+                });
+
+                // Render the gallery with updated images
+                renderGallery(imageArr);
+                setupImagePop(); // Rebind image popup handler
+
+                // Reset the image area to its default "cloud upload" icon and message
+                imgArea.innerHTML = `
+                    <i class='bx bxs-cloud-upload icon'></i>
+                    <p>Image size must be less than <span>2MB</span></p>
+                `;
+                imgArea.classList.remove('active'); // Remove active styling
+
+                // Clear input fields and file selection
+                document.getElementById('imageTitle').value = '';
+                document.getElementById('imageDesc').value = '';
+                inputFile.value = '';
+                previewedImage = null;
+
+                // Revert button back to "Select Image"
+                selectOrUploadBtn.textContent = "Select Image";
+                selectOrUploadBtn.classList.remove('upload-img-btn');
+                selectOrUploadBtn.classList.add('select-img-btn');
+
+                // Restore the button click behavior to open file selector
+                selectOrUploadBtn.onclick = () => inputFile.click();
+            };
         };
 
+        // Read the image file as a data URL (base64-encoded string)
         reader.readAsDataURL(image);
     } else {
+        // Alert if image is too large
         alert("Image size more than 2MB");
     }
-})
+});
+
 
 function setupImagePop() {
     const imagePop = document.querySelector('.image-popup');
