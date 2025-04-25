@@ -1,6 +1,7 @@
-const uploadImage = document.querySelector('.select-img-btn');
+const selectOrUploadBtn = document.querySelector('.select-img-btn');
 const inputFile = document.querySelector('#file');
 const imgArea = document.querySelector('.img-area');
+const imgGalleryContainer = document.querySelector('.image-container');
 let galleryImages = document.querySelectorAll('.image-imgContainer img');
 const imageArr = [
     {
@@ -109,8 +110,6 @@ document.querySelector('.reset-btn .btn').onclick = () =>{
     window.location.reload();
 };
 // Render image gallery function
-const imgGalleryContainer = document.querySelector('.image-container');
-
 function renderGallery(images) {
     imgGalleryContainer.innerHTML = '';
 
@@ -138,28 +137,30 @@ function renderGallery(images) {
         // Event listener for the "Update" button
         card.querySelector('.update-btn').addEventListener('click', (e) => {
             e.stopPropagation();
-            // Prompt for new title and description
-            const newTitle = prompt("Enter new title:", img.title);
-            const newDesc = prompt("Enter new description:", img.description);
-            images[index].title = newTitle || 'Untitled';
-            images[index].description = newDesc || '';
-            renderGallery(images); // Re-render the gallery after update
-        })
+            // Prompt for new title and description and validate
+            let newTitle = prompt("Enter new title:", img.title)?.trim();
+            let newDesc = prompt("Enter new description:", img.description)?.trim();
 
+            // Title validation loop
+            while (!newTitle) {
+                newTitle = prompt("Enter new title (required):")?.trim();
+            }
+            // Description validation loop
+            while (!newDesc) {
+                newDesc = prompt("Enter new description (required):")?.trim();
+            }
+
+            // Update the image object
+            images[index].title = newTitle;
+            images[index].description = newDesc;
+            // Re-render the gallery after update
+            renderGallery(images);
+        })
         imgGalleryContainer.appendChild(card);
     });
-    setupImagePop(); // 💡 Re-bind click listeners after rendering
+    // Re-bind click listeners after rendering
+    setupImagePop();
 }
-// Reset the gallery
-document.querySelector('.reset-btn .btn').onclick = () =>{
-    window.location.reload();
-};
-// Get a reference to the Select/Upload button
-const selectOrUploadBtn = document.querySelector('.select-img-btn');
-
-// Variable to temporarily store the selected image and its preview URL
-let previewedImage = null;
-
 // When the Select/Upload button is clicked
 selectOrUploadBtn.addEventListener('click', () => {
     // Only trigger the file selection dialog if the button is in "select" mode
@@ -182,22 +183,8 @@ inputFile.addEventListener('change', function () {
             const imgArea = document.querySelector('.img-area'); // Container for image or upload icon
             // Clear any existing content inside the imgArea
             imgArea.innerHTML = '';
+            // Add the image to the preview area
             imgArea.innerHTML = `<img src="${imgUrl}">`;
-
-            // Create a new image element for preview
-            // const img = document.createElement('img');
-            // img.src = imgUrl;
-            // img.classList.add('preview-img');
-            // imgArea.appendChild(img);
-            // // Insert the new preview image
-            // imgArea.classList.add('active'); // Add styling class to indicate active preview
-            // imgArea.dataset.img = image.name; // Store the image name as a data attribute
-
-            // Store the preview image data for later upload
-            // previewedImage = {
-            //     URL: imgUrl,
-            //     file: image
-            // };
 
             // Change the button appearance and behavior to "Upload Image"
             selectOrUploadBtn.textContent = "Upload Image";
@@ -207,12 +194,29 @@ inputFile.addEventListener('change', function () {
             // Change the button behavior to handle the actual upload
             selectOrUploadBtn.onclick = () => {
                 // Get values from title and description input fields
-                const title = document.getElementById('imageTitle').value || 'Untitled';
-                const description = document.getElementById('imageDesc').value || '';
+                const titleInput = document.getElementById('imageTitle');
+                const descInput = document.getElementById('imageDesc');
+                // const title = document.getElementById('imageTitle').value.trim || 'Untitled';
+                // const description = document.getElementById('imageDesc').value.trim || '';
+
+                // Sanitize the input values
+                const title = titleInput.value.trim();
+                const description = descInput.value.trim();
+
+                // Validate input values
+                if (!title) {
+                    alert("Please enter an image title.");
+                    titleInput.focus();
+                    return;
+                }
+                if (!description) {
+                    alert("Please enter an image description.");
+                    descInput.focus();
+                    return;
+                }
 
                 // Add the new image to the beginning of the image array
                 imageArr.unshift({
-                    // URL: previewedImage.URL,
                     URL: imgUrl,
                     title: title,
                     description: description
@@ -233,7 +237,7 @@ inputFile.addEventListener('change', function () {
                 document.getElementById('imageTitle').value = '';
                 document.getElementById('imageDesc').value = '';
                 inputFile.value = '';
-                previewedImage = null;
+                // previewedImage = null;
 
                 // Revert button back to "Select Image"
                 selectOrUploadBtn.textContent = "Select Image";
@@ -252,7 +256,6 @@ inputFile.addEventListener('change', function () {
         alert("Image size more than 2MB");
     }
 });
-
 
 function setupImagePop() {
     const imagePop = document.querySelector('.image-popup');
@@ -277,8 +280,11 @@ function setupImagePop() {
 
             // Update button inside popup
             clonedCard.querySelector('.update-btn').onclick = () => {
-                const newTitle = prompt("New Title:", imageArr[index].title);
-                const newDesc = prompt("New Description:", imageArr[index].description);
+                const newTitleInput = prompt("New Title:", imageArr[index].title).trim();
+                const newDescInput = prompt("New Description:", imageArr[index].description).trim();
+
+                const newTitle = newTitleInput.length > 0 ? newTitleInput : alert('Image Title is required!');
+                const newDesc = newDescInput.length > 0 ? newDescInput : alert('Image Description is required!')
                 imageArr[index].title = newTitle || "Untitled";
                 imageArr[index].description = newDesc || '';
                 renderGallery(imageArr);
