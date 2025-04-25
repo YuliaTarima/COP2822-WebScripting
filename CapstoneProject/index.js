@@ -165,13 +165,13 @@ function renderGallery(images) {
             }
 
             // Prompt user to enter new description
-            let newDesc = prompt("Enter new description:", img.description)?.trim();
-            // Keep asking if description is empty
-            while (!newDesc) {
-                // Check if user pressed Cancel
-                if(newDesc === null || newDesc === undefined) {return;}
-                newDesc = prompt("Enter new description (required):")?.trim();
-            }
+            let newDesc = prompt("Enter new description:", img.description)?.trim() || '';
+            // If description required: keep asking if description is empty
+            // while (!newDesc) {
+            //     // Check if user pressed Cancel
+            //     if(newDesc === null || newDesc === undefined) {return;}
+            //     newDesc = prompt("Enter new description (required):")?.trim();
+            // }
 
             // Update the image details in the array
             images[index].title = newTitle;
@@ -199,19 +199,19 @@ selectOrUploadBtn.addEventListener('click', () => {
     const titleInput = document.getElementById('imageTitle');
     const descInput = document.getElementById('imageDesc');
     const title = titleInput.value.trim();
-    const description = descInput.value.trim();
+    const description = descInput.value.trim() || '';
 
     if (!title) {
         alert("Please enter an image title.");
         titleInput.focus();
         return;
     }
-
-    if (!description) {
-        alert("Please enter an image description.");
-        descInput.focus();
-        return;
-    }
+    // if not optional
+    // if (!description) {
+    //     alert("Please enter an image description.");
+    //     descInput.focus();
+    //     return;
+    // }
 
     imageArr.unshift({
         URL: selectedImageDataURL,
@@ -283,11 +283,22 @@ function setupImagePop() {
 
             // Update the image details when update button in popup is clicked
             clonedCard.querySelector('.update-btn').onclick = () => {
-                const newTitleInput = prompt("New Title:", imageArr[index].title).trim();
-                const newDescInput = prompt("New Description:", imageArr[index].description).trim();
-                // Show alert if title or description is empty
-                const newTitle = newTitleInput.length > 0 ? newTitleInput : alert('Image Title is required!');
-                const newDesc = newDescInput.length > 0 ? newDescInput : alert('Image Description is required!');
+                const newTitleInput = prompt("New Title:");
+                const newDescInput = prompt("New Description:");
+                // Show alert for empty input
+                // const newTitle = newTitleInput.length > 0 ? newTitleInput : alert('Image Title is required!');
+                // const newDesc = newDescInput.length > 0 ? newDescInput : alert('Image Description is required!');
+                let newTitle = newTitleInput.trim();
+                let newDesc = newDescInput.trim();
+                while (!newTitle) {
+                    // Check if user pressed Cancel
+                    if(newTitle === null || newTitle === undefined) {return;}
+                    newTitle = prompt("Enter new title (required):")?.trim();
+                    newDesc = prompt("Enter new description (optional):")?.trim() || '';
+                }
+                //update the image array data
+                imageArr[index].title = newTitle;
+                imageArr[index].description = newDesc;
 
                 renderGallery(imageArr);
                 imagePop.style.display = 'none';
